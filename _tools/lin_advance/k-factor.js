@@ -273,7 +273,7 @@ function genGcode() {
   k_script += ';\n' +
               '; Mark the test area for reference\n' +
               'M117 K0\n' +
-              'M900 K0 ; Set K-factor 0\n' +
+              'M572 D0 S0 ; Set K-factor 0\n' +
               moveTo(refStartX1, refStartY, basicSettings) +
               doEfeed('+', basicSettings, (USE_FWR ? 'FWR' : 'STD')) +
               createLine(refStartX1, refStartY + 20, 20, basicSettings) +
@@ -467,8 +467,8 @@ function createAltPattern(startX, startY, basicSettings, patSettings) {
 
   for (var i = patSettings['kStart']; i <= patSettings['kEnd']; i += patSettings['kStep']) {
     if (k % 2 === 0) {
-      gcode += 'M900 K' + Math.round10(i, -3) + ' ; set K-factor\n' +
-               'M117 K' + Math.round10(i, -3) + ' ; \n' +
+      gcode += 'M572 D0 S' + Math.round10(i, -3) + ' ; set K-factor\n' +
+               'M117 S' + Math.round10(i, -3) + ' ; \n' +
                createLine(startX + patSettings['lengthSlow'], startY + j, patSettings['lengthSlow'], basicSettings, {'speed': basicSettings['slow']}) +
                createLine(startX + patSettings['lengthSlow'] + patSettings['lengthFast'], startY + j, patSettings['lengthFast'], basicSettings, {'speed': basicSettings['fast']}) +
                createLine(startX + (2 * patSettings['lengthSlow']) + patSettings['lengthFast'], startY + j, patSettings['lengthSlow'], basicSettings, {'speed': basicSettings['slow']}) +
@@ -476,8 +476,8 @@ function createAltPattern(startX, startY, basicSettings, patSettings) {
       j += patSettings['lineSpacing'];
       k += 1;
     } else if (k % 2 !== 0) {
-      gcode += 'M900 K' + Math.round10(i, -3) + ' ; set K-factor\n' +
-               'M117 K' + Math.round10(i, -3) + ' ; \n' +
+      gcode += 'M572 D0 S' + Math.round10(i, -3) + ' ; set K-factor\n' +
+               'M117 S' + Math.round10(i, -3) + ' ; \n' +
                createLine(startX + patSettings['lengthSlow'] + patSettings['lengthFast'], startY + j, patSettings['lengthSlow'], basicSettings, {'speed': basicSettings['slow']}) +
                createLine(startX + patSettings['lengthSlow'], startY + j, patSettings['lengthFast'], basicSettings, {'speed': basicSettings['fast']}) +
                createLine(startX, startY + j, patSettings['lengthSlow'], basicSettings, {'speed': basicSettings['slow']}) +
@@ -496,8 +496,8 @@ function createStdPattern(startX, startY, basicSettings, patSettings) {
       gcode = '';
 
   for (var i = patSettings['kStart']; i <= patSettings['kEnd']; i += patSettings['kStep']) {
-    gcode += 'M900 K' + Math.round10(i, -3) + ' ; set K-factor\n' +
-             'M117 K' + Math.round10(i, -3) + ' ; \n' +
+    gcode += 'M572 D0 S' + Math.round10(i, -3) + ' ; set K-factor\n' +
+             'M117 S' + Math.round10(i, -3) + ' ; \n' +
              doEfeed('+', basicSettings, (basicSettings['fwRetract'] ? 'FWR' : 'STD')) +
              createLine(startX + patSettings['lengthSlow'], startY + j, patSettings['lengthSlow'], basicSettings, {'speed': basicSettings['slow']}) +
              createLine(startX + patSettings['lengthSlow'] + patSettings['lengthFast'], startY + j, patSettings['lengthFast'], basicSettings, {'speed': basicSettings['fast']}) +
